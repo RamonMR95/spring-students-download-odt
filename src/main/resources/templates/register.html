@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head th:replace="plantilla :: head"></head>
+<body>
+	<header th:replace="plantilla :: header"></header>
+	<div class="container py-5">
+		<div class="card">
+			<div class="card-header" th:text="${title}"></div>
+			<div class="card-body">
+				<form th:action="@{/register/}" th:object="${student}" method="post" enctype="multipart/form-data">
+					<div class="form-group">
+						<label for="student_name" class="col-form-label">Name</label>
+						<input placeholder="Enter the name" class="form-control col-sm-3" name="student_name" th:field="*{name}"/>
+						<div class="form-group alert alert-danger col-sm-3" th:if="${#fields.hasErrors('name')}" th:errors=*{name}></div>
+					</div>
+					<div class="form-group">
+						<label for="address" class="col-form-label">Address</label>
+						<input placeholder="Enter the address" class="form-control col-sm-3" name="address" th:field="*{address}"/>
+						<div class="form-group alert alert-danger col-sm-3" th:if="${#fields.hasErrors('address')}" th:errors=*{address}></div>
+					</div>
+					<div class="form-group">
+						<label for="town" class="col-form-label">Town</label>
+						<input placeholder="Enter the Town" class="form-control col-sm-3" name="town" th:field="*{town}"/>
+						<div class="form-group alert alert-danger col-sm-3" th:if="${#fields.hasErrors('town')}" th:errors=*{town}></div>
+					</div>
+					<div class="form-group">
+						<label for="zipcode" class="col-form-label">ZIP Code</label>
+						<input placeholder="Enter the ZIP Code" class="form-control col-sm-3" name="zipcode" th:field="*{zipCode}"/>
+						<div class="form-group alert alert-danger col-sm-3" th:if="${#fields.hasErrors('zipCode')}" th:errors=*{zipCode}></div>
+					</div>
+					<!--  
+					<div class="form-group">
+						<label for="photo" class="col-form-label">Photo</label>
+						<input type="file" class="form-control col-sm-3" name="photo" th:field="*{photo}"/>
+						<div class="form-group alert alert-danger col-sm-3" th:if="${#fields.hasErrors('photo')}" th:errors=*{photo}></div>
+					</div>
+					-->
+					<div class="form-group row py-2">
+						<div class="mx-1 row col-sm-2"><input type="submit" th:value="Register" class="btn btn-primary"/></div>
+						<div class="row"><input type="reset" th:value="Reset" class="btn btn-primary"/></div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+<footer th:replace="plantilla :: footer"></footer>
+</html>
