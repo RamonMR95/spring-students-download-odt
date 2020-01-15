@@ -11,12 +11,12 @@
 	<groupId>com.ramonmr95.tiky.app</groupId>
 	<artifactId>spring-students-download-odt</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>spring-students-download-odt</name>
 	<description>Proyecto de generación de ficheros word</description>
 
 	<properties>
-		<java.version>8</java.version>
+		<java.version>11</java.version>
 	</properties>
 
 	<dependencies>
