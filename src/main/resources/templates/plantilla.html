@@ -10,7 +10,7 @@
 <body>
 	<header th:fragment="header">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
-			<a class="navbar-brand" href="#">Students</a>
+			<a class="navbar-brand" th:href="@{/list}">Students</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarNav" aria-controls="navbarNav"
 				aria-expanded="false" aria-label="Toggle navigation">
@@ -26,11 +26,10 @@
 			</div>
 		</nav>
 	</header>
-
 </body>
 <footer class="fixed-bottom" th:fragment="footer">
 	<div class="footer-div btn-secondary text-white text-center">
-		Proyecto creado por Ramón Moñino Rubio y Antonio Ruiz Marín
+		<p>Proyecto creado por Ramón Moñino Rubio y Antonio Ruiz Marín &copy; 2020-21</p>
 		<div>
 			<a class="github-button" href="https://github.com/ramonmr95" aria-label="Follow @ramonmr95 on GitHub">Follow @ramonmr95</a>
 			<a class="github-button" href="https://github.com/tikyparkinson" aria-label="Follow @tikyparkinson on GitHub">Follow @tikyparkinson</a>

@@ -22,8 +22,10 @@
 				</tr>
 			</tbody>
 		</table>
+		<div>
+			<img th:if="${student.photo.length > 1}" th:src="@{'data:image/' + ${ext} + ';base64,' + ${image}}" class="rounded float-left" width="200px" height="200px">
+		</div>
 	</div>
-
 </body>
 <footer th:replace="plantilla :: footer"></footer>
 </html>

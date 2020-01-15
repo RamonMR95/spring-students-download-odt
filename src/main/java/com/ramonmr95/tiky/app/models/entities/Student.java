@@ -7,8 +7,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.executable.ExecutableType;
+import javax.validation.executable.ValidateOnExecution;
+
+import org.hibernate.validator.internal.IgnoreForbiddenApisErrors;
 
 
 @Entity
@@ -34,23 +41,14 @@ public class Student implements Serializable {
 	@Column(name = "zipcode")
 	private String zipCode;
 
-//	@NotEmpty
-//	@Lob
-//	@Column(columnDefinition = "LONGBLOB")
-//	private byte[] photo;
+	@Lob
+	@Column(columnDefinition = "LONGBLOB")
+	private byte[] photo;
 	
 	public Student() {
-		
+		photo = new byte[] {0};
 	}
-
-	public Student(String name, String address, String town, String zipCode) {
-		this.name = name;
-		this.address = address;
-		this.town = town;
-		this.zipCode = zipCode;
-//		this.photo = photo;
-	}
-
+	
 	public long getId() {
 		return id;
 	}
@@ -91,12 +89,12 @@ public class Student implements Serializable {
 		this.zipCode = zipCode;
 	}
 
-//	public byte[] getPhoto() {
-//		return photo;
-//	}
-//
-//	public void setPhoto(byte[] photo) {
-//		this.photo = photo;
-//	}
+	public byte[] getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(byte[] photo) {
+		this.photo = photo;
+	}
 
 }
