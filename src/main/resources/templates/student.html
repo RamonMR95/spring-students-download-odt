@@ -4,8 +4,8 @@
 <body>
 	<header th:replace="plantilla :: header"></header>
 	<div class="container py-5">
-		<div class="row">
-			<div>
+		<div class="row justify-content-center align-items-center">
+			<div class="mx-4">
 				<img th:if="${student.photo.length > 1}"
 					th:src="@{'data:image/' + ${ext} + ';base64,' + ${image}}"
 					class="img-thumbnail rounded float-left" width="200px"
@@ -13,6 +13,7 @@
 				<p th:if="${student.photo.length <= 1}"
 					th:text="'No photo available'"></p>
 			</div>
+
 			<table class="table table-hover col-sm-4">
 				<thead>
 					<tr class="bg-secondary text-white">
@@ -34,6 +35,11 @@
 					</tr>
 				</tbody>
 			</table>
+		</div>
+		<div class="row py-3 mx-2 justify-content-center align-items-end">
+			<a class="btn btn-primary"
+				th:href="@{'/student/download?id=' + ${student.id}}">Download
+				Docx</a>
 		</div>
 	</div>
 </body>
