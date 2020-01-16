@@ -2,21 +2,16 @@ package com.ramonmr95.tiky.app.models.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.executable.ExecutableType;
-import javax.validation.executable.ValidateOnExecution;
-
-import org.hibernate.validator.internal.IgnoreForbiddenApisErrors;
-
 
 @Entity
 @Table(name = "students")
@@ -42,13 +37,14 @@ public class Student implements Serializable {
 	private String zipCode;
 
 	@Lob
+	@Basic(fetch = FetchType.LAZY)
 	@Column(columnDefinition = "LONGBLOB")
 	private byte[] photo;
-	
+
 	public Student() {
-		photo = new byte[] {0};
+
 	}
-	
+
 	public long getId() {
 		return id;
 	}

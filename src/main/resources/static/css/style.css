@@ -1,3 +1,10 @@
 .footer-div {
-	height:auto;
+	height: auto;
+}
+
+.student-profile{
+	border-radius: 5px;
+	width: 50%;
+	margin: 0px auto;
+	float: none;
 }

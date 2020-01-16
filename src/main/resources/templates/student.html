@@ -4,26 +4,36 @@
 <body>
 	<header th:replace="plantilla :: header"></header>
 	<div class="container py-5">
-		<table class="table table-hover">
-			<thead>
-				<tr class="bg-secondary text-white">
-					<th>Name</th>
-					<th>Address</th>
-					<th>Town</th>
-					<th>ZIP code</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td th:text="${student.name}"></td>
-					<td th:text="${student.address}"></td>
-					<td th:text="${student.town}"></td>
-					<td th:text="${student.zipCode}"></td>
-				</tr>
-			</tbody>
-		</table>
-		<div>
-			<img th:if="${student.photo.length > 1}" th:src="@{'data:image/' + ${ext} + ';base64,' + ${image}}" class="rounded float-left" width="200px" height="200px">
+		<div class="row">
+			<div>
+				<img th:if="${student.photo.length > 1}"
+					th:src="@{'data:image/' + ${ext} + ';base64,' + ${image}}"
+					class="img-thumbnail rounded float-left" width="200px"
+					height="200px">
+				<p th:if="${student.photo.length <= 1}"
+					th:text="'No photo available'"></p>
+			</div>
+			<table class="table table-hover col-sm-4">
+				<thead>
+					<tr class="bg-secondary text-white">
+						<th th:text="'Student:'+ ${student.id}"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td th:text="${student.name}"></td>
+					</tr>
+					<tr>
+						<td th:text="${student.address}"></td>
+					</tr>
+					<tr>
+						<td th:text="${student.town}"></td>
+					</tr>
+					<tr>
+						<td th:text="${student.zipCode}"></td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 </body>

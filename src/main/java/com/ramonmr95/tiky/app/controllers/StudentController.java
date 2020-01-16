@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,11 +28,10 @@ public class StudentController {
 
 	@Autowired
 	private IStudentService studentService;
-	
-	private String extension;
-	
 
-	@GetMapping({"/list", "", "/"})
+	private String extension;
+
+	@GetMapping({ "/list", "", "/" })
 	public String list(Model model) {
 		List<Student> students = this.studentService.findAll();
 		model.addAttribute("students", students);
@@ -43,28 +40,21 @@ public class StudentController {
 	}
 
 	@PostMapping("/register")
-	public String saveRegister(@Valid @ModelAttribute Student student, BindingResult result, @RequestParam @ModelAttribute MultipartFile photo,
-			SessionStatus status, Model model, RedirectAttributes flash) {
+	public String saveRegister(@RequestParam @ModelAttribute MultipartFile photo, @ModelAttribute Student student,
+			BindingResult result, SessionStatus status, Model model, RedirectAttributes flash) {
 		model.addAttribute("title", "List of Students");
-		
-		List res = result.getAllErrors();
-		for (Object object : res) {
-			System.out.println(object.toString());
-		}
-		if (result.hasErrors()) {
-			return "register";
-		}
-		
+
 		try {
 			student.setPhoto(photo.getInputStream().readAllBytes());
 			extension = photo.getOriginalFilename().substring(photo.getOriginalFilename().lastIndexOf(".") + 1);
 			flash.addFlashAttribute("success", "Student register success");
 			this.studentService.save(student);
 			status.setComplete();
-			return "redirect:/list";
 		} 
-		catch (IOException e) {}
-		return "register";
+		catch (IOException e) {
+			return "register";
+		}
+		return "redirect:/list";
 	}
 
 	@RequestMapping("/remove")
@@ -80,14 +70,15 @@ public class StudentController {
 		if (student == null) {
 			return "redirect:/list";
 		}
-		
-		byte[] image = {0};
+
+		byte[] image = { 0 };
 		try {
 			image = Base64.getEncoder().encode(student.getPhoto());
-			model.addAttribute("image", new String( image, "UTF-8"));
+			model.addAttribute("image", new String(image, "UTF-8"));
 			model.addAttribute("ext", extension);
-			
-		} catch (Exception e) {}
+
+		} catch (Exception e) {
+		}
 
 		model.addAttribute("title", "Student: " + student.getName() + ", id: " + id);
 		model.addAttribute("student", student);
