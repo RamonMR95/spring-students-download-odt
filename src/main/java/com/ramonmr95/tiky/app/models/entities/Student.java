@@ -11,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "students")
@@ -23,16 +22,16 @@ public class Student implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotEmpty
+	//@NotEmpty
 	private String name;
 
-	@NotEmpty
+	//@NotEmpty
 	private String address;
 
-	@NotEmpty
+	//@NotEmpty
 	private String town;
 
-	@NotEmpty
+	//@NotEmpty
 	@Column(name = "zipcode")
 	private String zipCode;
 
