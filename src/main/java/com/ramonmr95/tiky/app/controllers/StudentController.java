@@ -71,11 +71,12 @@ public class StudentController {
 		try {
 			student.setPhoto(photo.getInputStream().readAllBytes());
 			extension = photo.getOriginalFilename().substring(photo.getOriginalFilename().lastIndexOf(".") + 1);
-			flash.addFlashAttribute("success", "Student register success");
 			this.studentService.save(student);
 			status.setComplete();
+			flash.addFlashAttribute("success", "Student: " + student.getName() + " registered successfully");
 		} 
 		catch (IOException e) {
+			flash.addFlashAttribute("error", "Error student register");
 			return "register";
 		}
 		return "redirect:/list";
@@ -83,12 +84,14 @@ public class StudentController {
 
 	@GetMapping("/remove")
 	public String delete(@RequestParam Long id, RedirectAttributes flash) {
-		Student uno = studentService.findOne(id);
-		if (uno.getId() == id) {
+		Student student = studentService.findOne(id);
+		if (student.getId() == id) {
 			try {
 				this.studentService.delete(id);
-				flash.addFlashAttribute("success", "Student delete success");
-			} catch (Exception e)  {
+				flash.addFlashAttribute("success", "Student: " + student.getName() + " has been deleted successfully");
+			} 
+			catch (Exception e)  {
+				flash.addFlashAttribute("error", "Error removing the student");
 				return "redirect:/list";
 			}
 		}
@@ -96,9 +99,10 @@ public class StudentController {
 	}
 
 	@GetMapping("/student")
-	public String showStudent(@RequestParam Long id, Model model) {
+	public String showStudent(@RequestParam Long id, Model model, RedirectAttributes flash) {
 		Student student = this.studentService.findOne(id);
 		if (student == null) {
+			flash.addFlashAttribute("error", "Student with ID: " + id + " does not exist in the db");
 			return "redirect:/list";
 		}
 
@@ -110,7 +114,6 @@ public class StudentController {
 
 		} catch (Exception e) {
 		}
-
 		model.addAttribute("title", "Student: " + student.getName() + ", id: " + id);
 		model.addAttribute("student", student);
 		return "student";
@@ -125,7 +128,7 @@ public class StudentController {
 	}
 	
 	@GetMapping("/student/download")
-	public String generateWordStudent(Student student, @RequestParam Long id) {
+	public String generateWordStudent(Student student, @RequestParam Long id, RedirectAttributes flash) {
 		XWPFDocument doc = new XWPFDocument();
 		
 		XWPFParagraph paragraph = doc.createParagraph();
@@ -172,6 +175,9 @@ public class StudentController {
 			
 			run.addBreak();
 			paragraph = doc.createParagraph();
+		}
+		else {
+			flash.addFlashAttribute("warning", "Word generated with no photo by Student with ID: " + id);
 		}
 
 		
@@ -233,7 +239,10 @@ public class StudentController {
 		try {
 			doc.write(new FileOutputStream(student.getName() + ".docx"));
 			doc.close();
-		} catch (IOException e) {
+			flash.addFlashAttribute("success", "Student word creation success");
+		} 
+		catch (IOException e) {
+			flash.addFlashAttribute("error", "Student with ID: " + id + " error generating word");
 			return "redirect:/student?id=" + id;
 		} 
 		return "redirect:/student?id=" + id;
