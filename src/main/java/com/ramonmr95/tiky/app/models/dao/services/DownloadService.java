@@ -77,14 +77,16 @@ public class DownloadService {
 
 				run.addPicture(bis, IMAGE_TYPES.getTypes(fileExtension), "image file", Units.toEMU(130), Units.toEMU(180));
 				bis.close();
-			} catch (IOException | InvalidFormatException e) {
+			} 
+			catch (IOException | InvalidFormatException e) {
 
 			}
 
 			run.addBreak();
 			paragraph = doc.createParagraph();
-		} else {
-			flash.addFlashAttribute("warning", "Word generated with no photo by Student with ID: " + student.getId());
+		} 
+		else {
+			flash.addFlashAttribute("warning", "Word generated with no photo by: " + student.getName());
 		}
 
 		XmlCursor cursor = paragraph.getCTP().newCursor();
@@ -145,7 +147,7 @@ public class DownloadService {
 		run.setText("Proyecto creado por Ramón Moñino Rubio y Antonio Ruiz Marín © 2020-21");
 		
 		try {
-			doc.write(new FileOutputStream(student.getName() + ".docx"));
+			doc.write(new FileOutputStream(student.getName().trim() + ".docx"));
 			doc.close();
 			flash.addFlashAttribute("success", "Student word creation success");
 		} 

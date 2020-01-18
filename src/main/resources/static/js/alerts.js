@@ -24,13 +24,16 @@ var alerts = {
 		})
 	},
 	registerSuccess: function(id) {
-		var name = document.querySelector('#registerName').value;
-		Swal.fire({
-			  position: 'center',
-			  icon: 'success',
-			  title: 'Student ' + name + ' created successfully',
-			  showConfirmButton: false,
-			  timer: 1500
-			})
+		if (id != undefined) {
+			var name = document.querySelector('#registerName').value;
+			Swal.fire({
+				  position: 'center',
+				  icon: 'success',
+				  title: 'Student ' + name + ' created successfully',
+				  showConfirmButton: false,
+				  timer: 1500
+				})
+		}
+
 	}
 }
