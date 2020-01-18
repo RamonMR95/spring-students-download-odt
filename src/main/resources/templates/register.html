@@ -10,7 +10,7 @@
 				<form th:action="@{/register/}" th:object="${student}" method="post" enctype="multipart/form-data">
 					<div class="form-group">
 						<label for="student_name" class="col-form-label">Name</label>
-						<input placeholder="Enter the name" class="form-control col-sm-3" name="student_name" th:field="*{name}" required/>
+						<input id="registerName" placeholder="Enter the name" class="form-control col-sm-3" name="student_name" th:field="*{name}" required/>
 						<!--<div class="form-group alert alert-danger col-sm-3" th:if="${#fields.hasErrors('name')}" th:errors=*{name}></div>-->
 					</div>
 					<div class="form-group">
@@ -33,7 +33,8 @@
 						<input type="file" class="form-control col-sm-5" name="photo"/>
 					</div>
 					<div class="form-group row py-2">
-						<div class="mx-1 row col-sm-2"><input type="submit" th:value="Register" class="btn btn-primary" onClick="alerts.registerSuccess()"/></div>
+						<div class="mx-1 row col-sm-2"><input type="submit" th:value="Register" class="btn btn-primary" 
+							th:onClick="'javascript:alerts.registerSuccess('+ ${student.id} +')'"/></div>
 						<div class="row"><input type="reset" th:value="Reset" class="btn btn-primary"/></div>
 					</div>
 				</form>

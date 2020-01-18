@@ -1,19 +1,29 @@
 package com.ramonmr95.tiky.app.models.entities;
 
+import java.io.Serializable;
+
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
-public enum IMAGE_TYPES {
+public enum IMAGE_TYPES implements Serializable {
 
-	JPEG(XWPFDocument.PICTURE_TYPE_JPEG, "jpeg"),
-	JPG(XWPFDocument.PICTURE_TYPE_JPEG, "jpg"),
-	PNG(XWPFDocument.PICTURE_TYPE_PNG, "png"),
-	GIF(XWPFDocument.PICTURE_TYPE_GIF, "gif");
+	PICTURE_TYPE_JPEG("jpeg", XWPFDocument.PICTURE_TYPE_JPEG),
+	PICTURE_TYPE_JPG("jpg", XWPFDocument.PICTURE_TYPE_JPEG),
+	PICTURE_TYPE_PNG("png",  XWPFDocument.PICTURE_TYPE_PNG),
+	PICTURE_TYPE_GIF("gif",  XWPFDocument.PICTURE_TYPE_GIF);
 
 	private String ext;
 	private int type;
 
-	IMAGE_TYPES(int type, String ext) {
+	IMAGE_TYPES(String ext, int type) {
+		this.ext = ext;
 		this.type = type;
+	}
+
+	public String getExt() {
+		return ext;
+	}
+
+	public void setExt(String ext) {
 		this.ext = ext;
 	}
 
@@ -25,12 +35,13 @@ public enum IMAGE_TYPES {
 		this.type = type;
 	}
 	
-	public String getExt() {
-		return ext;
-	}
-
-	public void setExt(String ext) {
-		this.ext = ext;
-	}
-
+    public static int getTypes(String ext) {
+        for (IMAGE_TYPES types : IMAGE_TYPES.values()) {
+            if (types.ext.equalsIgnoreCase(ext)) {
+            	return types.getType();
+            }
+        }
+        return XWPFDocument.PICTURE_TYPE_JPEG;
+    }
+	
 }

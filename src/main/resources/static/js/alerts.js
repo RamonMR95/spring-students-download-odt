@@ -17,17 +17,18 @@ var alerts = {
 				btn.click();
 				Swal.fire(
 					'Deleted!',
-					'Your file has been deleted.',
+					'The student has been deleted.',
 					'success'
 				)
 			}
 		})
 	},
 	registerSuccess: function(id) {
+		var name = document.querySelector('#registerName').value;
 		Swal.fire({
 			  position: 'center',
 			  icon: 'success',
-			  title: 'Student with id: ' + id + ' created successfully',
+			  title: 'Student ' + name + ' created successfully',
 			  showConfirmButton: false,
 			  timer: 1500
 			})

@@ -75,8 +75,7 @@ public class DownloadService {
 				ByteArrayInputStream bis = new ByteArrayInputStream(baos.toByteArray());
 				baos.close();
 
-				
-				run.addPicture(bis, XWPFDocument.PICTURE_TYPE_JPEG, "image file", Units.toEMU(130), Units.toEMU(180));
+				run.addPicture(bis, IMAGE_TYPES.getTypes(fileExtension), "image file", Units.toEMU(130), Units.toEMU(180));
 				bis.close();
 			} catch (IOException | InvalidFormatException e) {
 
