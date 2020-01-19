@@ -35,7 +35,7 @@ public class StudentController {
 
 	private String fileExtension;
 	
-	@GetMapping({ "/list", "", "/" })
+	@GetMapping({"/students", "", "/"})
 	public String list(Model model) {
 		List<Student> students = this.studentService.findAll();
 		model.addAttribute("students", students);
@@ -59,7 +59,7 @@ public class StudentController {
 			flash.addFlashAttribute("error", "Error student register");
 			return "register";
 		}
-		return "redirect:/list";
+		return "redirect:/students";
 	}
 
 	@GetMapping("/remove")
@@ -72,10 +72,10 @@ public class StudentController {
 			} 
 			catch (Exception e)  {
 				flash.addFlashAttribute("error", "Error removing the student");
-				return "redirect:/list";
+				return "redirect:/students";
 			}
 		}
-		return "redirect:/list";
+		return "redirect:/students";
 	}
 
 	@GetMapping("/student")
@@ -83,7 +83,7 @@ public class StudentController {
 		Student student = this.studentService.findOne(id);
 		if (student == null) {
 			flash.addFlashAttribute("error", "Student with ID: " + id + " does not exist in the db");
-			return "redirect:/list";
+			return "redirect:/students";
 		}
 
 		byte[] image = { 0 };
@@ -112,5 +112,5 @@ public class StudentController {
 		downloadService.download(student, flash, fileExtension);
 		return "redirect:/student?id=" + student.getId();
 	}
-
+	
 }
