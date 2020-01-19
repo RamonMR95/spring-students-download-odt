@@ -35,7 +35,7 @@ public class StudentController {
 
 	private String fileExtension;
 	
-	@GetMapping({"/students", "", "/"})
+	@GetMapping({"/students"})
 	public String list(Model model) {
 		List<Student> students = this.studentService.findAll();
 		model.addAttribute("students", students);
