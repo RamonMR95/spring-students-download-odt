@@ -3,13 +3,13 @@ package com.ramonmr95.tiky.app.models.dao.services;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
@@ -28,6 +28,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblWidth;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTblWidth;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ramonmr95.tiky.app.models.entities.IMAGE_TYPES;
@@ -35,9 +36,8 @@ import com.ramonmr95.tiky.app.models.entities.Student;
 
 @Service
 public class DownloadService {
-	
-	
-	public void download(Student student, RedirectAttributes flash, String fileExtension) {
+
+	public void download(Student student, RedirectAttributes flash, String fileExtension, HttpServletResponse resp) {
 		XWPFDocument doc = new XWPFDocument();
 
 		XWPFParagraph paragraph = doc.createParagraph();
@@ -75,17 +75,15 @@ public class DownloadService {
 				ByteArrayInputStream bis = new ByteArrayInputStream(baos.toByteArray());
 				baos.close();
 
-				run.addPicture(bis, IMAGE_TYPES.getTypes(fileExtension), "image file", Units.toEMU(130), Units.toEMU(180));
+				run.addPicture(bis, IMAGE_TYPES.getTypes(fileExtension), "image file", Units.toEMU(130),
+						Units.toEMU(180));
 				bis.close();
-			} 
-			catch (IOException | InvalidFormatException e) {
-
+			} catch (IOException | InvalidFormatException e) {
 			}
 
 			run.addBreak();
 			paragraph = doc.createParagraph();
-		} 
-		else {
+		} else {
 			flash.addFlashAttribute("warning", "Word generated with no photo by: " + student.getName());
 		}
 
@@ -145,14 +143,17 @@ public class DownloadService {
 
 		run = paragraph.createRun();
 		run.setText("Proyecto creado por Ramón Moñino Rubio y Antonio Ruiz Marín © 2020-21");
-		
+
 		try {
-			doc.write(new FileOutputStream(student.getName().trim() + ".docx"));
-			doc.close();
+			resp.setContentType("application/msword");
+			resp.setHeader("Content-disposition", "attachment; fileName=\"" + student.getName() + ".docx" + "\"");
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			doc.write(baos);
+			StreamUtils.copy(baos.toByteArray(), resp.getOutputStream());
 			flash.addFlashAttribute("success", "Student word creation success");
-		} 
-		catch (IOException e) {
+			baos.close();
+		} catch (IOException e) {
 			flash.addFlashAttribute("error", "Student with ID: " + student.getId() + " error generating word");
-		} 
+		}
 	}
 }

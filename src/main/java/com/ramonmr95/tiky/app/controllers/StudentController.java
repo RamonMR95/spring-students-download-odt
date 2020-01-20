@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -108,9 +109,8 @@ public class StudentController {
 	}
 	
 	@GetMapping("/student/download")
-	public String generateWordStudent(Student student, RedirectAttributes flash) {
-		downloadService.download(student, flash, fileExtension);
-		return "redirect:/student?id=" + student.getId();
+	public void generateWordStudent(Student student, RedirectAttributes flash, HttpServletResponse resp) {
+		downloadService.download(student, flash, fileExtension, resp);
 	}
 	
 }
