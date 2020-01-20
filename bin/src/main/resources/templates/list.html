@@ -26,12 +26,12 @@
 					<td th:text="${student.town}"></td>
 					<td th:text="${student.zipCode}"></td>
 					<td><a class="btn btn-danger btn-sm"
-								th:href="@{'/remove?id=' + ${student.id}}">X</a></td>
+					th:id="${student.id}"
+					th:onClick="'javascript:alerts.deleteConfirm('+ ${student.id} +')'">X</a></td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
-
 </body>
 <footer th:replace="plantilla :: footer"></footer>
 </html>

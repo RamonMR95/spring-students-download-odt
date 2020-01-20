@@ -8,3 +8,9 @@
 	margin: 0px auto;
 	float: none;
 }
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
