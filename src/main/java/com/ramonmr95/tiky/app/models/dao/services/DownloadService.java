@@ -34,19 +34,27 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ramonmr95.tiky.app.models.entities.IMAGE_TYPES;
 import com.ramonmr95.tiky.app.models.entities.Student;
 
+
 @Service
 public class DownloadService {
 
 	public void download(Student student, RedirectAttributes flash, String fileExtension, HttpServletResponse resp) {
 		XWPFDocument doc = new XWPFDocument();
-
 		XWPFParagraph paragraph = doc.createParagraph();
 		XWPFRun run = paragraph.createRun();
-
 		CTSectPr sectPr = doc.getDocument().getBody().addNewSectPr();
 		XWPFHeaderFooterPolicy headerFooterPolicy = new XWPFHeaderFooterPolicy(doc, sectPr);
+		
+		createHeader(doc, paragraph, run, headerFooterPolicy);
+		createBody(doc, paragraph, run, student, fileExtension, flash);
+		createFooter(paragraph, run, headerFooterPolicy);
+		getWord(resp, doc, student, flash);
+		
+	}
+	
+	private void createHeader(XWPFDocument doc, XWPFParagraph paragraph, XWPFRun run, XWPFHeaderFooterPolicy headerFooterPolicy) {
 		XWPFHeader header = headerFooterPolicy.createHeader(XWPFHeaderFooterPolicy.DEFAULT);
-
+		
 		paragraph = header.getParagraphArray(0);
 
 		if (paragraph == null)
@@ -61,26 +69,14 @@ public class DownloadService {
 		run.setText("Ramón Moñino Rubio	 -	Antonio Ruiz Marín");
 		run.addCarriageReturn();
 		run.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-
+	}
+	
+	private void createBody(XWPFDocument doc, XWPFParagraph paragraph, XWPFRun run, Student student, String fileExtension, RedirectAttributes flash) {
 		paragraph = doc.createParagraph();
 		run = paragraph.createRun();
 
 		if (student.getPhoto() != null && student.getPhoto().length > 1) {
-			BufferedImage imgByte;
-			try {
-				imgByte = ImageIO.read(new ByteArrayInputStream(student.getPhoto()));
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				ImageIO.write(imgByte, fileExtension, baos);
-				baos.flush();
-				ByteArrayInputStream bis = new ByteArrayInputStream(baos.toByteArray());
-				baos.close();
-
-				run.addPicture(bis, IMAGE_TYPES.getTypes(fileExtension), "image file", Units.toEMU(130),
-						Units.toEMU(180));
-				bis.close();
-			} catch (IOException | InvalidFormatException e) {
-			}
-
+			addPictureWord(run, student, fileExtension);
 			run.addBreak();
 			paragraph = doc.createParagraph();
 		} else {
@@ -88,6 +84,12 @@ public class DownloadService {
 		}
 
 		XmlCursor cursor = paragraph.getCTP().newCursor();
+		createWordTable(doc, student, cursor);
+	}
+
+	private void createWordTable(XWPFDocument doc, Student student, XmlCursor cursor) {
+		XWPFParagraph paragraph;
+		XWPFRun run;
 		XWPFTable table = doc.insertNewTbl(cursor);
 		XWPFTableRow firstRow = table.getRow(0);
 
@@ -131,7 +133,27 @@ public class DownloadService {
 			run = paragraph.createRun();
 			run.setText(stValues[i]);
 		}
+	}
 
+	private void addPictureWord(XWPFRun run, Student student, String fileExtension) {
+		BufferedImage imgByte;
+		try {
+			imgByte = ImageIO.read(new ByteArrayInputStream(student.getPhoto()));
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(imgByte, fileExtension, baos);
+			baos.flush();
+			ByteArrayInputStream bis = new ByteArrayInputStream(baos.toByteArray());
+			baos.close();
+
+			run.addPicture(bis, IMAGE_TYPES.getTypes(fileExtension), "image file", Units.toEMU(130),
+					Units.toEMU(180));
+			bis.close();
+		} catch (IOException | InvalidFormatException e) {
+			
+		}
+	}
+	
+	private void createFooter(XWPFParagraph paragraph, XWPFRun run, XWPFHeaderFooterPolicy headerFooterPolicy) {
 		XWPFFooter footer = headerFooterPolicy.createFooter(XWPFHeaderFooterPolicy.DEFAULT);
 
 		paragraph = footer.getParagraphArray(0);
@@ -143,7 +165,9 @@ public class DownloadService {
 
 		run = paragraph.createRun();
 		run.setText("Proyecto creado por Ramón Moñino Rubio y Antonio Ruiz Marín © 2020-21");
-
+	}
+	
+	private void getWord(HttpServletResponse resp, XWPFDocument doc, Student student, RedirectAttributes flash) {
 		try {
 			resp.setContentType("application/msword");
 			resp.setHeader("Content-disposition", "attachment; fileName=\"" + student.getName() + ".docx" + "\"");
