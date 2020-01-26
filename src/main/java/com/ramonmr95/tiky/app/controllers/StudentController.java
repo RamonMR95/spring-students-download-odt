@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,6 +62,7 @@ public class StudentController {
 	 * 
 	 * @param photo - Parámetro del request que contiene la foto del estudiante
 	 * @param student - Objeto de tipo estudiante formado a través de los valores de los campos input con thymeleaf
+	 * @param result - Clase de spring mvc encargada de la gestión de errores del formulario
 	 * @param status - Objeto de tipo SessionStatus que nos ayudará a terminar con el atributo de session student
 	 * @param model - Clase de spring mvc usada para pasar atributos a la vista
 	 * @param flash - Clase de spring framework usada para crear mensajes en las vistas que duran una peticion de http
@@ -68,7 +70,7 @@ public class StudentController {
 	 */
 	@PostMapping("/register")
 	public String saveRegister(@RequestParam @ModelAttribute MultipartFile photo, @ModelAttribute Student student, 
-			SessionStatus status, Model model, RedirectAttributes flash) {
+			BindingResult result, SessionStatus status, Model model, RedirectAttributes flash) {
 		model.addAttribute("title", "List of Students");
 
 		try {
