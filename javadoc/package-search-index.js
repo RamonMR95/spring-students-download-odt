@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.ramonmr95.tiky.app.controllers"},{"l":"com.ramonmr95.tiky.app.models.dao"},{"l":"com.ramonmr95.tiky.app.models.dao.services"},{"l":"com.ramonmr95.tiky.app.models.entities"}]

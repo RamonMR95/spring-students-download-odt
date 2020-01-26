@@ -1,0 +1,5 @@
+com.ramonmr95.tiky.app
+com.ramonmr95.tiky.app.controllers
+com.ramonmr95.tiky.app.models.dao
+com.ramonmr95.tiky.app.models.dao.services
+com.ramonmr95.tiky.app.models.entities
