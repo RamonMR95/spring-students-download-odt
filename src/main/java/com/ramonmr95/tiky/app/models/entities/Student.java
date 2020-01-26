@@ -12,6 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+/**
+ * Clase POJO de estudiante que contiene sus atributos y sus métodos de acceso y establecimento.
+ * 
+ * @author Ramón Moñino Rubio - Antonio Ruiz Marín 2º DAM
+ */
 @Entity
 @Table(name = "students")
 public class Student implements Serializable {
@@ -22,16 +27,12 @@ public class Student implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	//@NotEmpty
 	private String name;
 
-	//@NotEmpty
 	private String address;
 
-	//@NotEmpty
 	private String town;
 
-	//@NotEmpty
 	@Column(name = "zipcode")
 	private String zipCode;
 

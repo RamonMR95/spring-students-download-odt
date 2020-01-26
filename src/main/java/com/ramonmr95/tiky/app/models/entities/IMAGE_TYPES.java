@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
+/**
+ * Enumerado que contiene los formatos de imagen que permitimos en el documento word.
+ * 
+ * @author Ramón Moñino Rubio - Antonio Ruiz Marín 2º DAM
+ */
 public enum IMAGE_TYPES implements Serializable {
 
 	PICTURE_TYPE_JPEG("jpeg", XWPFDocument.PICTURE_TYPE_JPEG),

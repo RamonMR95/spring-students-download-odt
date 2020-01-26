@@ -35,9 +35,23 @@ import com.ramonmr95.tiky.app.models.entities.IMAGE_TYPES;
 import com.ramonmr95.tiky.app.models.entities.Student;
 
 
+/**
+ * Servicio encargado de la creación y descarga del archivo docx del estudiante
+ * 
+ * @author Ramón Moñino Rubio - Antonio Ruiz Marín 2º DAM
+ *
+ */
 @Service
 public class DownloadService {
 
+	/**
+	 * Método que se encarga de la descarga de la documentación del estudiante
+	 * 
+	 * @param student - Estudiante que requiere el documento
+	 * @param flash - Clase de spring framework usada para crear mensajes en las vistas que duran una peticion de http
+	 * @param fileExtension - Extensión del tipo de la imagen
+	 * @param resp - Respuesta Http que devuelve el servidor
+	 */
 	public void download(Student student, RedirectAttributes flash, String fileExtension, HttpServletResponse resp) {
 		XWPFDocument doc = new XWPFDocument();
 		XWPFParagraph paragraph = doc.createParagraph();
@@ -52,6 +66,14 @@ public class DownloadService {
 		
 	}
 	
+	/**
+	 * Método que se encarga de la creación del header del documento docx
+	 * 
+	 * @param doc - Objeto documento
+	 * @param paragraph - Párafo del documento
+	 * @param run - Objeto que hace referencia al párrafo en el que nos encontramos
+	 * @param headerFooterPolicy - Objeto necesario para crear el header y footer. 
+	 */
 	private void createHeader(XWPFDocument doc, XWPFParagraph paragraph, XWPFRun run, XWPFHeaderFooterPolicy headerFooterPolicy) {
 		XWPFHeader header = headerFooterPolicy.createHeader(XWPFHeaderFooterPolicy.DEFAULT);
 		
@@ -71,6 +93,16 @@ public class DownloadService {
 		run.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 	}
 	
+	/**
+	 * Método que se encarga de la creación del cuerpo del documento docx
+	 * 
+	 * @param doc - Objeto documento
+	 * @param paragraph - Párafo del documento
+	 * @param run - Objeto que hace referencia al párrafo en el que nos encontramos
+	 * @param student - Estudiante que requiere el documento
+	 * @param fileExtension - Extensión del tipo de la imagen
+	 * @param flash - Clase de spring framework usada para crear mensajes en las vistas que duran una peticion de http
+	 */
 	private void createBody(XWPFDocument doc, XWPFParagraph paragraph, XWPFRun run, Student student, String fileExtension, RedirectAttributes flash) {
 		paragraph = doc.createParagraph();
 		run = paragraph.createRun();
@@ -87,6 +119,13 @@ public class DownloadService {
 		createWordTable(doc, student, cursor);
 	}
 
+	/**
+	 * Metodo que se encarga de crear la tabla con los datos del estudiante.
+	 * 
+	 * @param doc - Objeto documento
+	 * @param student - Estudiante que requiere el documento
+	 * @param cursor - Puntero que hace referencia a la posición actual
+	 */
 	private void createWordTable(XWPFDocument doc, Student student, XmlCursor cursor) {
 		XWPFParagraph paragraph;
 		XWPFRun run;
@@ -135,6 +174,13 @@ public class DownloadService {
 		}
 	}
 
+	/**
+	 * Método que se encarga de añadir una imagen con formato jpeg, jpg, gif y png. 
+	 * 
+	 * @param run - Objeto que hace referencia al párrafo en el que nos encontramos
+	 * @param student - Estudiante que requiere el documento
+	 * @param fileExtension - Extensión del tipo de la imagen
+	 */
 	private void addPictureWord(XWPFRun run, Student student, String fileExtension) {
 		BufferedImage imgByte;
 		try {
@@ -153,6 +199,13 @@ public class DownloadService {
 		}
 	}
 	
+	/**
+	 * Método encargado de la creación del footer del documento
+	 * 
+	 * @param paragraph - Párafo del documento
+	 * @param run - Objeto que hace referencia al párrafo en el que nos encontramos
+	 * @param headerFooterPolicy - Objeto necesario para crear el header y footer. 
+	 */
 	private void createFooter(XWPFParagraph paragraph, XWPFRun run, XWPFHeaderFooterPolicy headerFooterPolicy) {
 		XWPFFooter footer = headerFooterPolicy.createFooter(XWPFHeaderFooterPolicy.DEFAULT);
 
@@ -167,6 +220,14 @@ public class DownloadService {
 		run.setText("Proyecto creado por Ramón Moñino Rubio y Antonio Ruiz Marín © 2020-21");
 	}
 	
+	/**
+	 * Método que mediante la respuesta http, envía el fichero docx al estudiante.
+	 * 
+	 * @param resp - Respuesta del server que entrega el archivo al alumno 
+	 * @param doc - Objeto documento
+	 * @param student - Estudiante que requiere el documento
+	 * @param flash - Clase de spring framework usada para crear mensajes en las vistas que duran una peticion de http
+	 */
 	private void getWord(HttpServletResponse resp, XWPFDocument doc, Student student, RedirectAttributes flash) {
 		try {
 			resp.setContentType("application/msword");
